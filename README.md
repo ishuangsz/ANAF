@@ -1,97 +1,81 @@
-# ANAF
+<div align="center">
 
-**Antinoise Adaptive Time–Frequency Fusion for multivariate time series anomaly detection**
+# 🌊 ANAF
 
-Sizhe Huang, Liang Xi, Xunhua Huang, Yuan Cheng, and Han Liu  
-*Engineering Applications of Artificial Intelligence*, 2026
+### Antinoise Adaptive Time–Frequency Fusion<br>for Multivariate Time Series Anomaly Detection
 
-[![Paper](https://img.shields.io/badge/Paper-EAAI%202026-8A2BE2?style=flat-square)](https://doi.org/10.1016/j.engappai.2026.114584)
+Sizhe Huang · Liang Xi · Xunhua Huang · Yuan Cheng · Han Liu  
+**Engineering Applications of Artificial Intelligence · 2026**
+
+[![Paper](https://img.shields.io/badge/Paper-EAAI_2026-7C3AED?style=flat-square)](https://doi.org/10.1016/j.engappai.2026.114584)
 [![Python](https://img.shields.io/badge/Python-3.11%2B-3776AB?style=flat-square&logo=python&logoColor=white)](pyproject.toml)
 [![PyTorch](https://img.shields.io/badge/PyTorch-2.2%2B-EE4C2C?style=flat-square&logo=pytorch&logoColor=white)](pyproject.toml)
-[![License](https://img.shields.io/badge/License-MIT-green?style=flat-square)](LICENSE)
+[![License](https://img.shields.io/badge/License-MIT-22C55E?style=flat-square)](LICENSE)
 
-Official implementation of ANAF for unsupervised multivariate time series anomaly
-detection, combining temporal and wavelet representations with adaptive fusion
-and uncertainty-aware reconstruction.
+[🚀 Quick start](#-quick-start) · [📦 Data](#-data) · [📝 Citation](#-citation)
 
-## Installation
+</div>
 
-Use Python 3.11 or newer. Install from the project root.
+- 🌊 **Time meets frequency.** Learn temporal and wavelet representations from multivariate sequences.
+- 🎛️ **Adaptive fusion.** Use frequency features to modulate temporal representations during training.
+- 🎯 **Uncertainty-aware detection.** Learn reconstruction means and precision with variance-weighted training.
 
-```bash
-python -m pip install -e .
-```
+> 📈 **Paper highlight** · The paper reports an 11.09% improvement in average F1
+> across four benchmark datasets. [Read the paper →](https://doi.org/10.1016/j.engappai.2026.114584)
 
-For CUDA, first install a compatible PyTorch build using the [official instructions](https://pytorch.org/get-started/locally/).
-
-## Data
-
-Prepare each entity as `DATA_ROOT/<entity>/train.npy` and
-`DATA_ROOT/<entity>/test.npz`.
-
-| Dataset | Entity directories | Channels | Source |
-| --- | --- | ---: | --- |
-| `SMD` | `SMD_1`–`SMD_28` | 38 | [SMD](https://github.com/NetManAIOps/OmniAnomaly/tree/master/ServerMachineDataset) |
-| `SMAP` | `SMAP_1`–`SMAP_54` | 25 | [Telemanom](https://github.com/khundman/telemanom) |
-| `JD1` | `JD_1`–`JD_30` | 19 | [JumpStarter Dataset2](https://github.com/NetManAIOps/JumpStarter) |
-| `JD2` | `GCP_1`–`GCP_30` | 19 | [JumpStarter Dataset3](https://github.com/NetManAIOps/JumpStarter) |
-
-`train.npy` contains the normal sequence with shape `[T_train, C]`. `test.npz`
-contains `x` with shape `[T_test, C]` and binary labels `y` with shape `[T_test]`
-or `[T_test, 1]`, where 1 marks an anomaly. Feature values must be finite, with
-matching column order across files. Obtain and prepare the datasets separately.
-
-## Training and evaluation
+## 🚀 Quick start
 
 ```bash
+pip install -e .
+
 export DATA_ROOT=/path/to/processed/data
 
 anaf train \
-  --config configs/anaf.yaml \
-  --dataset SMD \
-  --data-root "$DATA_ROOT" \
-  --output-dir runs \
-  --device auto
+  --config configs/anaf.yaml --dataset SMD \
+  --data-root "$DATA_ROOT" --output-dir runs --device auto
 
 anaf evaluate \
-  --config configs/anaf.yaml \
-  --dataset SMD \
-  --data-root "$DATA_ROOT" \
-  --checkpoint-dir runs \
-  --device auto
+  --config configs/anaf.yaml --dataset SMD \
+  --data-root "$DATA_ROOT" --checkpoint-dir runs --device auto
 ```
 
-Replace `SMD` with `SMAP`, `JD1`, or `JD2` to run another dataset. Settings are in
-[configs/anaf.yaml](configs/anaf.yaml), with 10 epochs, batch size 64, and Adam at
-0.001 by default. Use the same configuration and seed for both commands.
-`--device` accepts `auto`, `cpu`, `cuda`, or `cuda:N`. Run `anaf train --help` or
-`anaf evaluate --help` for all options.
+Choose `SMD`, `SMAP`, `JD1`, or `JD2` with `--dataset`. Edit
+[configs/anaf.yaml](configs/anaf.yaml) for experiment settings. Defaults use
+10 epochs, batch size 64, and Adam with a learning rate of 0.001.
 
-Each entity's best checkpoint is saved to `runs/<DATASET>/entity_001/best.pt`
-(with the corresponding three-digit entity ID). Evaluation writes per-entity
-and aggregate results to `runs/<DATASET>/metrics.json`.
+📁 **Checkpoints** save to `runs/<DATASET>/entity_<ID>/best.pt`.  
+📊 **Results** save to `runs/<DATASET>/metrics.json`.
+
+## 📦 Data
+
+Each entity contains `train.npy` and `test.npz` under `DATA_ROOT/<entity>/`.
+
+| Dataset | Entity directories | Channels | Source |
+| --- | --- | ---: | --- |
+| SMD | `SMD_1`–`SMD_28` | 38 | [SMD](https://github.com/NetManAIOps/OmniAnomaly/tree/master/ServerMachineDataset) |
+| SMAP | `SMAP_1`–`SMAP_54` | 25 | [Telemanom](https://github.com/khundman/telemanom) |
+| JD1 | `JD_1`–`JD_30` | 19 | [JumpStarter Dataset2](https://github.com/NetManAIOps/JumpStarter) |
+| JD2 | `GCP_1`–`GCP_30` | 19 | [JumpStarter Dataset3](https://github.com/NetManAIOps/JumpStarter) |
+
+- `train.npy` — normal sequence, shape `[T_train, C]`.
+- `test.npz` — `x` with shape `[T_test, C]` and labels `y` with shape `[T_test]` or `[T_test, 1]`. Use `1` for anomalies.
 
 <details>
-<summary>Training and evaluation protocol</summary>
+<summary>⚙️ Experiment protocol</summary>
 
-Training holds out the final 20% of each entity chronologically, with at least one
-full window per segment, and fits the scaler on the training segment. With the
-default 100-point window, training needs at least 200 points and testing needs
-at least 100 points.
+Training uses a chronological 80/20 split and a scaler fitted on the training
+segment. Evaluation uses temporal-path scores from the middle point of each
+window, with per-channel median/IQR normalization and maximum aggregation.
 
-Evaluation uses the temporal path and scores the middle point of each stride-1
-window. Channel scores are normalized using the test-sequence median and IQR,
-then combined by taking the maximum active channel score. The report includes
-Best F1, ROC AUC, and their point-adjusted variants. Best-F1 thresholds are chosen
-per entity using test labels. Point adjustment also uses the true anomaly labels.
-Dataset metrics are computed from concatenated predictions or scores.
-
-This release has been verified on synthetic CPU training and evaluation.
-Full benchmark runs remain to be completed.
+Reported metrics are Best F1, ROC AUC, F1_PA, and AUC_PA. Best-F1 thresholds are
+selected per entity using test labels. PA promotes each labeled anomaly
+interval to its maximum score.
 
 </details>
 
-## Citation
+## 📝 Citation
+
+If ANAF helps your research, please consider citing our paper and giving the repository a ⭐.
 
 ```bibtex
 @article{huang2026anaf,
