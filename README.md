@@ -16,13 +16,6 @@ Sizhe Huang · Liang Xi · Xunhua Huang · Yuan Cheng · Han Liu
 
 </div>
 
-- 🌊 **Time meets frequency.** Learn temporal and wavelet representations from multivariate sequences.
-- 🎛️ **Adaptive fusion.** Use frequency features to modulate temporal representations during training.
-- 🎯 **Uncertainty-aware detection.** Learn reconstruction means and precision with variance-weighted training.
-
-> 📈 **Paper highlight** · The paper reports an 11.09% improvement in average F1
-> across four benchmark datasets. [Read the paper →](https://doi.org/10.1016/j.engappai.2026.114584)
-
 ## 🚀 Quick start
 
 ```bash
@@ -59,19 +52,6 @@ Each entity contains `train.npy` and `test.npz` under `DATA_ROOT/<entity>/`.
 
 - `train.npy` — normal sequence, shape `[T_train, C]`.
 - `test.npz` — `x` with shape `[T_test, C]` and labels `y` with shape `[T_test]` or `[T_test, 1]`. Use `1` for anomalies.
-
-<details>
-<summary>⚙️ Experiment protocol</summary>
-
-Training uses a chronological 80/20 split and a scaler fitted on the training
-segment. Evaluation uses temporal-path scores from the middle point of each
-window, with per-channel median/IQR normalization and maximum aggregation.
-
-Reported metrics are Best F1, ROC AUC, F1_PA, and AUC_PA. Best-F1 thresholds are
-selected per entity using test labels. PA promotes each labeled anomaly
-interval to its maximum score.
-
-</details>
 
 ## 📝 Citation
 
