@@ -1,0 +1,28 @@
+cff-version: 1.2.0
+message: "If you use ANAF, please cite the associated article."
+title: "ANAF: AntiNoise Adaptive Time-Frequency Fusion"
+type: software
+version: 0.1.0
+date-released: 2026-08-09
+license: MIT
+authors:
+  - family-names: Huang
+    given-names: Sizhe
+preferred-citation:
+  type: article
+  title: "Antinoise Adaptive Time-Frequency Fusion for multivariate time series anomaly detection"
+  authors:
+    - family-names: Huang
+      given-names: Sizhe
+    - family-names: Xi
+      given-names: Liang
+    - family-names: Huang
+      given-names: Xunhua
+    - family-names: Cheng
+      given-names: Yuan
+    - family-names: Liu
+      given-names: Han
+  journal: Engineering Applications of Artificial Intelligence
+  volume: 174
+  year: 2026
+  doi: 10.1016/j.engappai.2026.114584
