@@ -1,0 +1,60 @@
+training:
+  seed: 2024
+  epochs: 10
+  batch_size: 64
+  stride: 1
+  learning_rate: 0.001
+  heads: 4
+  dropout: 0.1
+  validation_ratio: 0.2
+  wavelet: db1
+  wavelet_level: 3
+  alpha: 1.0
+  scheduler_step_size: 5
+  scheduler_gamma: 0.5
+  threshold_steps: 1000
+
+datasets:
+  SMD:
+    directory_prefix: SMD
+    entity_start: 1
+    entity_end: 28
+    channels: 38
+    window_size: 100
+    encoder_layers: 4
+    model_dim: 128
+    hidden_dim: 1024
+    select_position: mid
+    ignore_dimensions:
+      4: [4]
+      5: [3]
+  SMAP:
+    directory_prefix: SMAP
+    entity_start: 1
+    entity_end: 54
+    channels: 25
+    window_size: 100
+    encoder_layers: 4
+    model_dim: 128
+    hidden_dim: 1024
+    select_position: mid
+  JD1:
+    directory_prefix: JD
+    entity_start: 1
+    entity_end: 30
+    channels: 19
+    window_size: 100
+    encoder_layers: 2
+    model_dim: 128
+    hidden_dim: 256
+    select_position: mid
+  JD2:
+    directory_prefix: GCP
+    entity_start: 1
+    entity_end: 30
+    channels: 19
+    window_size: 100
+    encoder_layers: 2
+    model_dim: 128
+    hidden_dim: 256
+    select_position: mid
